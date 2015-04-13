@@ -1,0 +1,63 @@
+<h1> Idea Title: <%= @idea.title %></h1>
+<p> Idea Content: <%= @idea.body %>
+
+   <br>
+<%= link_to("Edit", edit_idea_path(@idea)) %>
+<%= link_to "Delete", idea_path(@idea), method: :delete, data: {confirm: "Are you sure?"} %>
+
+
+
+<% like = @idea.likes.find_by_user_id(current_user.id) if user_signed_in? %>
+<% if like %>
+ <%= link_to ('Unlike'), idea_like_path(@idea,like), method: :delete %>
+<% else %>
+ <%= link_to ('Like'), idea_likes_path(@idea), method: :post %>
+<% end %>
+
+
+
+
+<% join = @idea.joins.find_by_user_id(current_user.id) if user_signed_in? %>
+<% if join %>
+ <%= link_to ('Remove Join'), idea_join_path(@idea,join), method: :delete %>
+<% else %>
+ <%= link_to ('Join'), idea_joins_path(@idea), method: :post %>
+<% end %>
+
+<h3> Members </h3>
+<p>
+<% @idea.joins.each do |element| %>
+<%= element.user.name_display %>
+<% end %>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Comments</h2>
+<% @idea.comments.each do |element| %>
+  <p>
+    <%= element.body %>
+    <%= button_to "Delete", idea_comment_path(@idea, element), method: :delete, data: {confirm: "Are you sure?"} %>
+    <% if element.user.present? %>
+      <p>Answered by: <%= element.user.name_display %></p>
+    <% end %>
+  </p>
+  <hr>
+<% end %>
+
+<%= form_for @comment, url: idea_comments_path(@idea) do |f| %>
+ <%= f.text_area :body, placeholder: "Comment goes here" %>
+  <br>
+  <%= f.submit "Submit Comment" %> 
+<% end %>

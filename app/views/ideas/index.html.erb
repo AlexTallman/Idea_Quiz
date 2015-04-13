@@ -1,0 +1,49 @@
+<h1> Idea Index </h1>
+<hr>
+
+
+<table border="2", class="table table-striped">
+  <tr>
+    <td align="center"><h4> Title </h4></td>
+    <td align="center"><h4> Idea </h4></td>
+    <td align="center"><h4> Action </h4></td>
+    <td align="center"><h4> Like Count </h4></td>
+    <td align="center"><h4> Member Count </h4></td>
+    <td align="center"><h4> Created By </h4></td>
+
+  </tr>
+  <% @ideas.each do |element| %>
+  <td align="center"><%= link_to element.title, idea_path(element) %></td>
+
+  <td align="center"><%= element.body %></td>
+  <td align="center"><h4> 
+
+
+<% like = element.likes.find_by_user_id(current_user.id) if user_signed_in? %>
+<% if like %>
+ <%= link_to ('Unlike'), idea_like_path(element,like), method: :delete %>
+<% else %>
+ <%= link_to ('Like'), idea_likes_path(element), method: :post %>
+<% end %>
+
+
+<% join = element.joins.find_by_user_id(current_user.id) if user_signed_in? %>
+<% if join %>
+ <%= link_to ('Remove Join'), idea_join_path(element,join), method: :delete %>
+<% else %>
+ <%= link_to ('Join'), idea_joins_path(element), method: :post %>
+<% end %></h4></td>
+
+<td align="center"><h4><%= element.likes.count %> </h4></td>
+<td align="center"><h4><%= element.joins.count %> </h4></td>
+<td align="center"><h4> <%= element.user.name_display %></h4></td>
+
+
+
+
+
+
+
+</tr>
+  <% end %>
+</table>

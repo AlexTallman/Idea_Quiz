@@ -1,0 +1,18 @@
+<h1> Edit Idea: "<%= @idea.id %>" </h1>
+
+<% if @idea.errors.any? %>
+  <% @idea.errors.full_messages.each do |element| %>
+  <%= element %>
+  <br>
+  <% end %>
+  <% end %>
+
+<%= form_for @idea do |element| %>
+  <%= element.label :title %>
+  <%= element.text_field :title %>
+  <br>
+  <%= element.label :body %>
+  <%= element.text_field :body %>
+  <br>
+  <%= element.submit %>
+<% end %>

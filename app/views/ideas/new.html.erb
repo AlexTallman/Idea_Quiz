@@ -1,0 +1,10 @@
+<%= form_for @idea do |element| %>
+  <%= element.label :title %>:
+  <%= element.text_field :title %>
+
+  <%= element.label :body %>:
+  <%= element.text_field :body %>
+
+
+  <%= element.submit "Create Idea!!" %>
+  <% end %>
